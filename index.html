@@ -4,9 +4,22 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Monthsary Surprise 💙</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet" />
 
 <style>
-* {
+:root {
+  --blue-deep: #03162b;
+  --blue-mid: #0b3d6e;
+  --blue-bright: #0ea5e9;
+  --blue-light: #7dd3fc;
+  --blue-pale: #e0f2fe;
+  --white: #ffffff;
+  --glow: rgba(14,165,233,0.45);
+  --card-bg: rgba(255,255,255,0.08);
+  --card-border: rgba(125,211,252,0.3);
+}
+
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -15,44 +28,24 @@
 
 body {
   min-height: 100vh;
-  font-family: Arial, sans-serif;
+  font-family: 'Quicksand', sans-serif;
   overflow: hidden;
-  background: linear-gradient(135deg, #082f49, #0284c7, #7dd3fc);
-  color: white;
+  background: var(--blue-deep);
+  color: var(--white);
+  position: relative;
 }
 
-.bg-animation {
+/* ===== BACKGROUND CANVAS ===== */
+#bgCanvas {
   position: fixed;
   inset: 0;
-  overflow: hidden;
+  width: 100%;
+  height: 100%;
   z-index: 0;
+  pointer-events: none;
 }
 
-.bubble {
-  position: absolute;
-  bottom: -80px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
-  animation: floatBubble linear infinite;
-}
-
-@keyframes floatBubble {
-  0% { transform: translateY(0) scale(1); opacity: 0; }
-  20% { opacity: 1; }
-  100% { transform: translateY(-115vh) scale(1.8); opacity: 0; }
-}
-
-.star {
-  position: absolute;
-  color: rgba(255, 255, 255, 0.9);
-  animation: twinkle 2s infinite alternate;
-}
-
-@keyframes twinkle {
-  from { opacity: 0.25; transform: scale(0.8) rotate(0deg); }
-  to { opacity: 1; transform: scale(1.25) rotate(20deg); }
-}
-
+/* ===== PAGES ===== */
 .page {
   display: none;
   min-height: 100vh;
@@ -69,134 +62,455 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  animation: pageIn 0.45s ease;
+  animation: pageIn 0.5s cubic-bezier(0.34,1.56,0.64,1);
 }
 
 .final-page.active {
   justify-content: flex-start;
-  padding-top: 18px;
-  padding-bottom: 18px;
+  padding: 12px 6px 24px;
+  align-items: stretch;
 }
 
 @keyframes pageIn {
-  from { opacity: 0; transform: translateX(40px); }
-  to { opacity: 1; transform: translateX(0); }
+  from { opacity: 0; transform: translateY(30px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+/* ===== CARD ===== */
 .card {
   width: 100%;
   max-width: 430px;
-  padding: 24px 18px;
-  border-radius: 30px;
-  background: rgba(255, 255, 255, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  box-shadow: 0 18px 45px rgba(3, 105, 161, 0.4);
-  backdrop-filter: blur(14px);
+  padding: 30px 22px;
+  border-radius: 36px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 0 60px var(--glow), 0 24px 50px rgba(0,0,0,0.4);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  position: relative;
+  overflow: hidden;
 }
 
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 36px;
+  background: linear-gradient(135deg, rgba(125,211,252,0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* ===== TYPOGRAPHY ===== */
 h1 {
-  font-size: clamp(27px, 8vw, 38px);
+  font-family: 'Pacifico', cursive;
+  font-size: clamp(26px, 7vw, 34px);
   margin-bottom: 14px;
-  text-shadow: 0 4px 15px rgba(0,0,0,0.22);
+  text-shadow: 0 0 30px var(--glow), 0 4px 12px rgba(0,0,0,0.3);
+  line-height: 1.2;
+  letter-spacing: 0.5px;
 }
 
 p {
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: 15.5px;
+  line-height: 1.7;
   max-width: 350px;
   margin: 0 auto;
+  color: rgba(255,255,255,0.88);
+  font-weight: 600;
 }
 
 .small {
-  margin-top: 10px;
+  margin-top: 12px;
   font-size: 13px;
-  opacity: 0.9;
+  opacity: 0.85;
+  color: var(--blue-light);
+  font-weight: 600;
 }
 
+/* ===== BUTTONS ===== */
 button {
-  margin-top: 16px;
-  padding: 14px 22px;
+  margin-top: 18px;
+  padding: 15px 30px;
   border: none;
   border-radius: 999px;
-  font-weight: bold;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
   font-size: 15px;
-  background: white;
+  /* Pearl-glass default */
+  background: linear-gradient(160deg, rgba(255,255,255,0.95) 0%, rgba(224,242,254,0.9) 100%);
   color: #0369a1;
-  box-shadow: 0 10px 22px rgba(2, 132, 199, 0.32);
+  box-shadow:
+    0 2px 0 rgba(255,255,255,0.6) inset,
+    0 -1px 0 rgba(3,105,161,0.15) inset,
+    0 8px 20px rgba(2,132,199,0.22),
+    0 2px 6px rgba(0,0,0,0.12);
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.3px;
+  transition: transform 0.18s cubic-bezier(0.34,1.56,0.64,1),
+              box-shadow 0.18s ease,
+              filter 0.18s ease;
+  -webkit-tap-highlight-color: transparent;
 }
+
+/* ripple layer */
+button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at var(--rx,50%) var(--ry,50%), rgba(255,255,255,0.45) 0%, transparent 65%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+button:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow:
+    0 2px 0 rgba(255,255,255,0.7) inset,
+    0 -1px 0 rgba(3,105,161,0.2) inset,
+    0 14px 28px rgba(2,132,199,0.28),
+    0 4px 10px rgba(0,0,0,0.14);
+  filter: brightness(1.04);
+}
+
+button:hover::after { opacity: 1; }
 
 button:active {
-  transform: scale(0.95);
+  transform: scale(0.94) translateY(1px);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.5) inset,
+    0 4px 10px rgba(2,132,199,0.18),
+    0 1px 4px rgba(0,0,0,0.1);
+  filter: brightness(0.97);
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
 }
 
+/* ---- PRIMARY (blue-btn) ---- */
 .blue-btn {
-  background: linear-gradient(135deg, #38bdf8, #1d4ed8);
-  color: white;
+  background: linear-gradient(160deg, #67d8fb 0%, #38aef5 35%, #1e63e0 100%);
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.18);
+  box-shadow:
+    0 2px 0 rgba(255,255,255,0.28) inset,
+    0 -2px 0 rgba(0,0,0,0.18) inset,
+    0 10px 28px rgba(56,189,248,0.45),
+    0 3px 8px rgba(29,78,216,0.3);
+  border: 1px solid rgba(255,255,255,0.18);
 }
 
-.stitch-face {
-  width: 150px;
-  height: 120px;
-  margin: 0 auto 18px;
+.blue-btn:hover {
+  background: linear-gradient(160deg, #7ae0fc 0%, #45b8f7 35%, #2a72f0 100%);
+  box-shadow:
+    0 2px 0 rgba(255,255,255,0.32) inset,
+    0 -2px 0 rgba(0,0,0,0.2) inset,
+    0 16px 38px rgba(56,189,248,0.55),
+    0 5px 14px rgba(29,78,216,0.38);
+}
+
+.blue-btn:active {
+  background: linear-gradient(160deg, #38aef5 0%, #1e63e0 100%);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.2) inset,
+    0 5px 14px rgba(56,189,248,0.32);
+}
+
+/* ===== STITCH CHARACTER ===== */
+.stitch-wrap {
+  margin: 0 auto 22px;
+  width: 160px;
+  height: 135px;
   position: relative;
-  animation: bounce 1.7s infinite;
+  animation: float 2.5s ease-in-out infinite;
+  filter: drop-shadow(0 12px 25px rgba(56,189,248,0.5));
 }
 
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50%       { transform: translateY(-12px) rotate(2deg); }
 }
 
 .face {
   width: 120px;
-  height: 95px;
-  background: #38bdf8;
-  border-radius: 50% 50% 45% 45%;
+  height: 100px;
+  background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+  border-radius: 50% 50% 47% 47%;
   margin: auto;
   position: relative;
-  border: 4px solid #075985;
+  border: 3px solid #0284c7;
+  box-shadow: 0 0 20px rgba(56,189,248,0.6) inset;
 }
 
 .ear {
   position: absolute;
   width: 55px;
   height: 85px;
-  background: #0284c7;
-  border: 4px solid #075985;
+  background: linear-gradient(135deg, #0ea5e9, #0284c7);
+  border: 3px solid #075985;
   top: 18px;
   z-index: -1;
 }
 
-.ear.left { left: 0; border-radius: 80% 20% 70% 30%; transform: rotate(-28deg); }
-.ear.right { right: 0; border-radius: 20% 80% 30% 70%; transform: rotate(28deg); }
-.eye { position: absolute; top: 34px; width: 15px; height: 20px; background: #06283d; border-radius: 50%; }
-.eye.left { left: 35px; }
-.eye.right { right: 35px; }
-.nose { position: absolute; top: 52px; left: 50%; transform: translateX(-50%); width: 26px; height: 17px; background: #082f49; border-radius: 50%; }
-.mouth { position: absolute; top: 70px; left: 50%; transform: translateX(-50%); width: 38px; height: 18px; border-bottom: 4px solid #082f49; border-radius: 50%; }
+.ear.left  { left: 1px; border-radius: 80% 20% 70% 30%; transform: rotate(-28deg); }
+.ear.right { right: 1px; border-radius: 20% 80% 30% 70%; transform: rotate(28deg); }
 
+.eye {
+  position: absolute;
+  top: 34px;
+  width: 16px;
+  height: 22px;
+  background: #03162b;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.2);
+  animation: blink 4s infinite;
+}
+
+@keyframes blink {
+  0%,95%,100% { transform: scaleY(1); }
+  97% { transform: scaleY(0.1); }
+}
+
+.eye.left  { left: 33px; }
+.eye.right { right: 33px; }
+
+.eye-shine {
+  width: 5px;
+  height: 5px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+}
+
+.nose {
+  position: absolute;
+  top: 56px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 18px;
+  background: #082f49;
+  border-radius: 50%;
+}
+
+.mouth {
+  position: absolute;
+  top: 74px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 18px;
+  border-bottom: 4px solid #082f49;
+  border-radius: 50%;
+}
+
+.stitch-antenna {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 28px;
+}
+
+.antenna-stick {
+  width: 3px;
+  height: 20px;
+  background: #0ea5e9;
+  border-radius: 99px;
+}
+
+.antenna-stick::after {
+  content: '';
+  display: block;
+  width: 8px;
+  height: 8px;
+  background: var(--blue-light);
+  border-radius: 50%;
+  margin-left: -2.5px;
+  margin-top: -3px;
+}
+
+/* ===== PROGRESS BAR ===== */
+.progress {
+  width: 100%;
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.15);
+  margin: 18px auto 6px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.bar {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #38bdf8, #1d4ed8);
+  border-radius: 999px;
+  transition: width 0.5s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow: 0 0 10px rgba(56,189,248,0.6);
+}
+
+/* ===== HEART GRID ===== */
 .choice-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
 .choice-grid button {
   margin-top: 10px;
-  padding: 13px 10px;
+  padding: 14px 8px;
+  font-size: 14px;
+  border-radius: 20px;
+  background: linear-gradient(160deg, rgba(255,255,255,0.13) 0%, rgba(14,165,233,0.12) 100%);
+  color: #e0f2fe;
+  border: 1px solid rgba(125,211,252,0.3) !important;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.18), 0 1px 0 rgba(255,255,255,0.1) inset;
+  text-shadow: none;
 }
 
+.choice-grid button:hover {
+  background: linear-gradient(160deg, rgba(255,255,255,0.22) 0%, rgba(56,189,248,0.2) 100%);
+  border-color: rgba(125,211,252,0.6) !important;
+  box-shadow: 0 8px 22px rgba(56,189,248,0.28), 0 1px 0 rgba(255,255,255,0.15) inset;
+  color: #fff;
+}
+
+.heart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.heart-box {
+  height: 70px;
+  margin-top: 0;
+  border-radius: 22px;
+  font-size: 28px;
+  background: linear-gradient(160deg, rgba(255,255,255,0.1) 0%, rgba(14,165,233,0.08) 100%);
+  border: 1px solid rgba(125,211,252,0.22) !important;
+  color: white;
+  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2), 0 1px 0 rgba(255,255,255,0.08) inset;
+  position: relative;
+  overflow: hidden;
+}
+
+.heart-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 40%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.12), transparent);
+  border-radius: 22px 22px 0 0;
+  pointer-events: none;
+}
+
+.heart-box:hover {
+  background: linear-gradient(160deg, rgba(255,255,255,0.18) 0%, rgba(56,189,248,0.15) 100%);
+  transform: translateY(-4px) scale(1.03);
+  border-color: rgba(125,211,252,0.5) !important;
+  box-shadow: 0 10px 26px rgba(56,189,248,0.28), 0 1px 0 rgba(255,255,255,0.12) inset;
+}
+
+.heart-box.opened {
+  background: linear-gradient(160deg, rgba(255,255,255,0.16) 0%, rgba(56,189,248,0.14) 100%);
+  transform: scale(1.05);
+  border-color: rgba(125,211,252,0.55) !important;
+  box-shadow: 0 8px 22px rgba(56,189,248,0.22), 0 1px 0 rgba(255,255,255,0.1) inset;
+}
+
+.heart-box.found {
+  background: linear-gradient(160deg, #67d8fb 0%, #38aef5 40%, #1e63e0 100%) !important;
+  color: white;
+  border-color: rgba(255,255,255,0.25) !important;
+  box-shadow: 0 8px 26px rgba(56,189,248,0.55), 0 2px 0 rgba(255,255,255,0.3) inset !important;
+  animation: heartPop 0.45s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+@keyframes heartPop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.22) rotate(-4deg); }
+  70%  { transform: scale(0.96) rotate(2deg); }
+  100% { transform: scale(1.04); }
+}
+
+/* ===== MEMORY GAME ===== */
+.mini-game {
+  margin: 18px auto 0;
+  display: grid;
+  grid-template-columns: repeat(3, 74px);
+  gap: 12px;
+  justify-content: center;
+}
+
+.tile {
+  height: 74px;
+  border-radius: 22px;
+  background: linear-gradient(160deg, rgba(255,255,255,0.12) 0%, rgba(14,165,233,0.1) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  border: 1px solid rgba(125,211,252,0.28);
+  cursor: pointer;
+  transition: all 0.28s cubic-bezier(0.34,1.56,0.64,1);
+  color: var(--blue-light);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.2), 0 1px 0 rgba(255,255,255,0.08) inset;
+}
+
+.tile::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 45%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.13), transparent);
+  border-radius: 22px 22px 0 0;
+  pointer-events: none;
+}
+
+.tile:hover {
+  background: linear-gradient(160deg, rgba(255,255,255,0.2) 0%, rgba(56,189,248,0.18) 100%);
+  transform: translateY(-4px) scale(1.07);
+  border-color: rgba(125,211,252,0.55);
+  box-shadow: 0 12px 26px rgba(56,189,248,0.3), 0 1px 0 rgba(255,255,255,0.15) inset;
+}
+
+.tile.flipped {
+  background: linear-gradient(160deg, #67d8fb 0%, #38aef5 40%, #1e63e0 100%);
+  border-color: rgba(255,255,255,0.3);
+  color: white;
+  text-shadow: 0 0 12px rgba(255,255,255,0.6);
+  box-shadow: 0 8px 24px rgba(56,189,248,0.5), 0 2px 0 rgba(255,255,255,0.25) inset;
+  animation: tileFlip 0.38s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+@keyframes tileFlip {
+  0%   { transform: rotateY(0deg) scale(1); }
+  35%  { transform: rotateY(90deg) scale(0.85); }
+  65%  { transform: rotateY(-10deg) scale(1.08); }
+  100% { transform: rotateY(0deg) scale(1.04); }
+}
+
+/* ===== TRAILER ===== */
 .trailer-box {
   width: 100%;
   max-width: 340px;
-  margin: 16px auto 6px;
-  border-radius: 20px;
+  margin: 18px auto 8px;
+  border-radius: 24px;
   overflow: hidden;
-  border: 3px solid rgba(255,255,255,0.55);
-  box-shadow: 0 12px 28px rgba(0,0,0,0.25);
-  background: rgba(255,255,255,0.15);
+  border: 2px solid rgba(125,211,252,0.4);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 30px rgba(56,189,248,0.2);
+  position: relative;
 }
 
 .trailer-box iframe {
@@ -206,154 +520,204 @@ button:active {
   border: 0;
 }
 
-.heart-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 14px;
-}
-
-.heart-box {
-  height: 64px;
-  margin-top: 0;
-  border-radius: 18px;
-  font-size: 26px;
-  transition: 0.25s ease;
-  background: rgba(255, 255, 255, 0.95);
-}
-
-.heart-box.opened {
-  background: linear-gradient(135deg, #dbeafe, #ffffff);
-  transform: scale(1.04);
-}
-
-.heart-box.found {
-  background: linear-gradient(135deg, #38bdf8, #1d4ed8);
-  color: white;
-}
-
-.mini-game {
-  margin: 18px auto 0;
-  display: grid;
-  grid-template-columns: repeat(3, 70px);
-  gap: 10px;
-  justify-content: center;
-}
-
-.tile {
-  height: 70px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.24);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 30px;
-  border: 1px solid rgba(255,255,255,0.35);
-  cursor: pointer;
-}
-
-.tile:active {
-  transform: scale(0.92);
-}
-
-.progress {
-  width: 100%;
-  height: 11px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.3);
-  margin: 18px auto 5px;
-  overflow: hidden;
-}
-
-.bar {
-  width: 0%;
-  height: 100%;
-  background: white;
-  border-radius: 999px;
-  transition: 0.35s ease;
-}
-
+/* ===== INPUT ===== */
 input {
   width: 100%;
   margin-top: 16px;
-  padding: 15px 16px;
-  border-radius: 18px;
-  border: 2px solid rgba(255,255,255,0.7);
+  padding: 15px 18px;
+  border-radius: 22px;
+  border: 2px solid rgba(125,211,252,0.4);
   outline: none;
   font-size: 16px;
   text-align: center;
   color: #075985;
   background: rgba(255,255,255,0.95);
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.ascii-box {
-  font-family: "Courier New", monospace;
-  font-size: clamp(2.8px, 0.83vw, 3.9px);
-  line-height: 1;
-  letter-spacing: -0.55px;
-  white-space: pre;
+input:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 20px rgba(56,189,248,0.3);
+}
+
+/* ===== LETTER ===== */
+.letter-card {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(125,211,252,0.25);
+  border-radius: 24px;
+  padding: 20px 18px;
+  margin: 14px 0;
   text-align: left;
-  color: #e0f2fe;
-  background: rgba(3, 105, 161, 0.55);
-  padding: 10px 3px;
-  border-radius: 18px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  max-width: 100%;
-  max-height: 60vh;
-  margin: 15px auto;
-  text-shadow: 0 0 4px rgba(255,255,255,0.35);
-  box-shadow: inset 0 0 18px rgba(255,255,255,0.2);
 }
 
+.letter-card p {
+  font-size: 15px;
+  line-height: 1.8;
+  max-width: none;
+  color: rgba(255,255,255,0.92);
+}
+
+.letter-deco {
+  font-size: 28px;
+  margin-bottom: 10px;
+  display: block;
+  text-align: center;
+}
+
+/* ===== FINAL PAGE ===== */
 .final-heart {
-  font-size: 52px;
-  animation: pulse 1s infinite;
+  font-size: 60px;
+  animation: heartbeat 1.2s infinite;
+  display: block;
+  margin: 0 auto 12px;
+  filter: drop-shadow(0 0 20px rgba(56,189,248,0.8));
 }
 
-@keyframes pulse {
+@keyframes heartbeat {
   0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.18); }
+  25%       { transform: scale(1.22); }
+  50%       { transform: scale(0.95); }
+  75%       { transform: scale(1.15); }
 }
 
+/* ascii canvas */
+.ascii-canvas-wrap {
+  width: 100%;
+  margin: 14px auto 0;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(125,211,252,0.3);
+  box-shadow: 0 0 30px rgba(56,189,248,0.15) inset, 0 8px 30px rgba(0,0,0,0.5);
+  background: #010e1f;
+  position: relative;
+}
+
+#asciiCanvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+}
+
+/* ===== CONFETTI ===== */
 .confetti {
   position: fixed;
-  top: -10px;
-  width: 10px;
-  height: 10px;
-  border-radius: 4px;
-  animation: fall 3s linear forwards;
+  top: -14px;
+  border-radius: 3px;
+  animation: confettiFall linear forwards;
   z-index: 99;
+  pointer-events: none;
 }
 
-@keyframes fall {
-  to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+@keyframes confettiFall {
+  to { transform: translateY(110vh) rotate(900deg); opacity: 0; }
 }
+
+/* ===== STEP INDICATOR ===== */
+.step-dots {
+  display: flex;
+  gap: 7px;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  transition: all 0.3s ease;
+}
+
+.dot.active-dot {
+  background: var(--blue-bright);
+  box-shadow: 0 0 10px var(--blue-bright);
+  width: 22px;
+  border-radius: 99px;
+}
+
+/* ===== PAGE-SPECIFIC ===== */
+#page7 .card > p:first-of-type {
+  font-size: 17px;
+}
+
+.date-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #38bdf8, #1d4ed8);
+  border-radius: 999px;
+  padding: 6px 18px;
+  font-size: 14px;
+  font-weight: 700;
+  margin: 10px auto 0;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 14px rgba(56,189,248,0.4);
+}
+
+.divider {
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(90deg, #38bdf8, #1d4ed8);
+  border-radius: 99px;
+  margin: 14px auto;
+}
+
+@keyframes rippleRing {
+  to { transform: scale(22); opacity: 0; }
+}
+
+/* ===== SHAKE ANIM FOR NO BTN ===== */
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20%      { transform: translateX(-10px); }
+  40%      { transform: translateX(10px); }
+  60%      { transform: translateX(-8px); }
+  80%      { transform: translateX(8px); }
+}
+
+.shake { animation: shake 0.4s ease; }
 </style>
 </head>
 
 <body>
-<div class="bg-animation" id="bg"></div>
 
+<canvas id="bgCanvas"></canvas>
+
+<!-- PAGE 1 -->
 <div class="page active" id="page1">
+  <div class="step-dots" id="dots1"></div>
   <div class="card">
-    <div class="stitch-face">
-      <div class="ear left"></div><div class="ear right"></div>
-      <div class="face"><div class="eye left"></div><div class="eye right"></div><div class="nose"></div><div class="mouth"></div></div>
+    <div class="stitch-wrap">
+      <div class="stitch-antenna">
+        <div class="antenna-stick"></div>
+        <div class="antenna-stick"></div>
+      </div>
+      <div class="ear left"></div>
+      <div class="ear right"></div>
+      <div class="face">
+        <div class="eye left"><div class="eye-shine"></div></div>
+        <div class="eye right"><div class="eye-shine"></div></div>
+        <div class="nose"></div>
+        <div class="mouth"></div>
+      </div>
     </div>
     <h1>HI SPOO 💙</h1>
+    <div class="divider"></div>
     <p>nay koi gamayng suprise sa imoha 🥺</p>
+    <p class="small">Tap the button to begin hehe~</p>
     <button class="blue-btn" onclick="nextPage(2)">Start Surprise 🛸</button>
   </div>
 </div>
 
+<!-- PAGE 2 -->
 <div class="page" id="page2">
+  <div class="step-dots" id="dots2"></div>
   <div class="card">
     <h1>Find the Hearts 💙</h1>
     <p>Open the boxes and find 3 hidden hearts to unlock the next part.</p>
     <div class="progress"><div class="bar" id="heartBar"></div></div>
     <p class="small" id="heartText">0 / 3 hearts found</p>
-
     <div class="heart-grid">
       <button class="heart-box" data-item="💙" onclick="openBox(this)">🎁</button>
       <button class="heart-box" data-item="🛸" onclick="openBox(this)">🎁</button>
@@ -362,12 +726,13 @@ input {
       <button class="heart-box" data-item="🌊" onclick="openBox(this)">🎁</button>
       <button class="heart-box" data-item="💙" onclick="openBox(this)">🎁</button>
     </div>
-
-    <p class="small" id="boxMessage">Tap a box to open or close it hehe</p>
+    <p class="small" id="boxMessage">Tap a box to open or close it hehe 🎁</p>
   </div>
 </div>
 
+<!-- PAGE 3 -->
 <div class="page" id="page3">
+  <div class="step-dots" id="dots3"></div>
   <div class="card">
     <h1>Choose a Memory ✨</h1>
     <p>Pick two boxes. Each one has a tiny message.</p>
@@ -384,22 +749,26 @@ input {
   </div>
 </div>
 
+<!-- PAGE 4 -->
 <div class="page" id="page4">
+  <div class="step-dots" id="dots4"></div>
   <div class="card">
     <h1>Mini Quiz #1 🥰</h1>
     <p>Asa ta first nag meet sa atong first date?</p>
     <div class="choice-grid">
-      <button onclick="wrongQuizOne()">Ayala Center</button>
-      <button onclick="correctQuizOne()">SM City</button>
-      <button onclick="wrongQuizOne()">SM Seaside</button>
-      <button onclick="wrongQuizOne()">Penshoppe</button>
+      <button onclick="wrongQuizOne(this)">Ayala Center</button>
+      <button onclick="correctQuizOne(this)">SM City</button>
+      <button onclick="wrongQuizOne(this)">SM Seaside</button>
+      <button onclick="wrongQuizOne(this)">Penshoppe</button>
     </div>
     <p class="small" id="quizOneText">Taronga jud nag pili haha</p>
     <button id="quizOneNext" class="blue-btn" style="display:none;" onclick="nextPage(5)">Next ➡️</button>
   </div>
 </div>
 
+<!-- PAGE 5 -->
 <div class="page" id="page5">
+  <div class="step-dots" id="dots5"></div>
   <div class="card">
     <h1>Mini Quiz #2 💙</h1>
     <p>When ang exact date nga gi panguyaban tika?</p>
@@ -411,21 +780,31 @@ input {
   </div>
 </div>
 
+<!-- PAGE 6 -->
 <div class="page" id="page6">
+  <div class="step-dots" id="dots6"></div>
   <div class="card">
     <h1>My Letter 💌</h1>
-    <p>
-      Thank you for loving me, supporting me, and staying with me.
-      You make my life better just by being in it. I love you so much, always. 💙
-    </p>
+    <div class="letter-card">
+      <span class="letter-deco">💙</span>
+      <p>
+        Thank you for loving me, supporting me, and staying with me.
+        You make my life better just by being in it.
+        Every single day with you feels like a gift I never want to give back.
+        I love you so much, always and forever. 💙
+      </p>
+    </div>
     <button class="blue-btn" onclick="nextPage(7)">Next ➡️</button>
   </div>
 </div>
 
+<!-- PAGE 7 -->
 <div class="page" id="page7">
+  <div class="step-dots" id="dots7"></div>
   <div class="card">
-    <h1>Movie Date? 💙</h1>
-    <p>Will you go on a monthsary movie date with me this May 27 Spoo?</p>
+    <h1>Movie Date? 🎬</h1>
+    <p>Will you go on a monthsary movie date with me?</p>
+    <span class="date-badge">📅 May 27, 2025</span>
 
     <div class="trailer-box">
       <iframe
@@ -436,30 +815,35 @@ input {
       </iframe>
     </div>
 
-    <p class="small">Kani atong tan-awon hehe 🎬💙</p>
-    <button class="blue-btn" onclick="acceptedDate()">Yes 💙</button>
+    <p class="small">Kani atong tan-awon hehe 💙</p>
+    <button class="blue-btn" onclick="acceptedDate()">Yes, always! 💙</button>
     <button id="noBtn" onclick="moveNo()">No 😝</button>
   </div>
 </div>
 
+<!-- PAGE 8 (FINAL) -->
 <div class="page final-page" id="page8">
-  <div class="card">
-    <div class="final-heart">💙</div>
-    <h1>Yay! Dapat lang!! Date Accepted 💙</h1>
-    <p>I LOVE YOU ALWAYS SPOO:</p>
-    <div class="ascii-box" id="asciiArt"></div>
-    <p class="small">Made with love for you, Spoo 💙</p>
-    <button onclick="nextPage(1)">Replay 🔁</button>
+  <div class="card" style="max-width:98vw; padding: 22px 14px;">
+    <span class="final-heart">💙</span>
+    <h1>Date Accepted!! 🎉</h1>
+    <div class="divider"></div>
+    <p>I LOVE YOU ALWAYS, SPOO 💙</p>
+    <div class="ascii-canvas-wrap">
+      <canvas id="asciiCanvas"></canvas>
+    </div>
+    <p class="small">Made with love just for you 💙</p>
+    <button class="blue-btn" onclick="replayAll()">Replay 🔁</button>
   </div>
 </div>
 
 <script>
 let hearts = 0;
 let memoryOpened = 0;
+const TOTAL_PAGES = 8;
 
 const asciiPhoto = `===+****=---------=++++++++++++++++++======---------------------------------------------------------
 ===++***=---------=+++++++++++++++++======----------------------------------------------------------
---=+++**=---------=+++++++++++++++++======-----------------------------------------------=----------
+--=+++**=---------=++++++++++++++++++=====-----------------------------------------------=----------
 --=+++**=---------=++++++++++++++++++=====-----------------------------------------------=----------
 --=+++**=---------=+++++++++++++++++======---:::::---------------------------------------=----------
 --=++***----------=+++++++++++++++++======---::::::--------------------------------------=----------
@@ -496,27 +880,71 @@ const asciiPhoto = `===+****=---------=++++++++++++++++++======-----------------
 *#%+=+###*##+====+##+=====--:::=+##############*=====++#+============-::=*=------=++****++++***##***
 *##+---+++=**++##++*+==-=*--::-+==---#########*=====++**#+======++==-::=**=------=+***++++++********
 *#####*#*#*==*+++*#*=---=:---:-=====--*######*++++++=+**#%++++=++==--:-***====---+***+*+++=+********
-*######*+++++++++++==-:::::-::=====-:=#%%%%@@@+++++++***#%*++++++==---+**====++++******++==+********
+*######*+++++++++++==-:::::-::=====-:=#%%%%@@@+++++++***#%*++++++==---+**===+++++******++==+********
 *#####*+++++++===**+++:---==--====--:-%@@@@@@#+++*****#%%%%+++++=----+**===+++++******++===+*****#**`;
 
+// ===== STEP DOTS =====
+function buildDots() {
+  for (let pg = 1; pg <= TOTAL_PAGES; pg++) {
+    const el = document.getElementById('dots' + pg);
+    if (!el) continue;
+    el.innerHTML = '';
+    for (let i = 1; i <= TOTAL_PAGES - 1; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i === pg ? ' active-dot' : '');
+      el.appendChild(d);
+    }
+  }
+}
+buildDots();
+
+// ===== NAV =====
 function nextPage(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page' + page).classList.add('active');
+  const target = document.getElementById('page' + page);
+  target.classList.add('active');
+  target.scrollTop = 0;
 }
 
+function replayAll() {
+  hearts = 0;
+  memoryOpened = 0;
+  window.noClickCount = 0;
+  document.getElementById('heartBar').style.width = '0%';
+  document.getElementById('heartText').innerText = '0 / 3 hearts found';
+  document.getElementById('boxMessage').innerText = 'Tap a box to open or close it hehe 🎁';
+  document.querySelectorAll('.heart-box').forEach(b => {
+    b.innerText = '🎁';
+    b.classList.remove('opened', 'found');
+  });
+  document.querySelectorAll('.tile').forEach(t => {
+    t.innerText = '?';
+    t.classList.remove('flipped');
+  });
+  document.getElementById('memoryMessage').innerText = 'Tap any box hehe';
+  document.getElementById('memoryNext').style.display = 'none';
+  document.getElementById('quizOneText').innerText = 'Taronga jud nag pili haha';
+  document.getElementById('quizOneNext').style.display = 'none';
+  document.getElementById('dateAnswer').value = '';
+  document.getElementById('dateQuizText').innerText = 'Type your answer love hehe';
+  document.getElementById('dateQuizNext').style.display = 'none';
+  document.getElementById('noBtn').style.cssText = '';
+  document.getElementById('noBtn').innerText = 'No 😝';
+  window.noClickCount = 0;
+  nextPage(1);
+}
+
+// ===== HEART BOXES =====
 function openBox(box) {
   const item = box.dataset.item;
-
   if (box.classList.contains('opened')) {
     box.classList.remove('opened');
     box.innerText = '🎁';
     document.getElementById('boxMessage').innerText = 'Box closed. Try another one hehe 🎁';
     return;
   }
-
   box.classList.add('opened');
   box.innerText = item;
-
   if (item === '💙') {
     if (!box.classList.contains('found')) {
       box.classList.add('found');
@@ -524,11 +952,10 @@ function openBox(box) {
       document.getElementById('heartBar').style.width = (hearts / 3 * 100) + '%';
       document.getElementById('heartText').innerText = hearts + ' / 3 hearts found';
       document.getElementById('boxMessage').innerText = 'You found a heart! 💙';
-      confettiBurst(8);
+      confettiBurst(10);
     }
-
     if (hearts === 3) {
-      document.getElementById('boxMessage').innerText = 'You found all hearts! Next page unlocked 💙';
+      document.getElementById('boxMessage').innerText = 'All hearts found! Unlocking next page 💙';
       setTimeout(() => nextPage(3), 900);
     }
   } else {
@@ -536,8 +963,10 @@ function openBox(box) {
   }
 }
 
+// ===== MEMORY =====
 function memoryPick(tile, message) {
-  if (tile.innerText === '?') {
+  if (!tile.classList.contains('flipped')) {
+    tile.classList.add('flipped');
     tile.innerText = '💙';
     memoryOpened++;
   }
@@ -548,93 +977,411 @@ function memoryPick(tile, message) {
   }
 }
 
-function correctQuizOne() {
+// ===== QUIZ 1 =====
+function correctQuizOne(btn) {
   document.getElementById('quizOneText').innerText = 'Correct! Sa SM City gyud ta first nag meet 💙';
   document.getElementById('quizOneNext').style.display = 'inline-block';
-  confettiBurst(12);
+  btn.style.background = 'linear-gradient(135deg, #38bdf8, #1d4ed8)';
+  btn.style.color = 'white';
+  confettiBurst(14);
 }
 
-function wrongQuizOne() {
+function wrongQuizOne(btn) {
   document.getElementById('quizOneText').innerText = 'Aray q hehe, try again Spoo 😝';
+  btn.classList.add('shake');
+  setTimeout(() => btn.classList.remove('shake'), 500);
 }
 
+// ===== QUIZ 2 =====
 function checkDateAnswer() {
   const answer = document.getElementById('dateAnswer').value.trim().toLowerCase().replace(/,/g, '').replace(/\s+/g, ' ');
   if (answer === 'september 27 2025') {
     document.getElementById('dateQuizText').innerText = 'DAPAT LANG aw haha, Correct! September 27 2025 💙';
     document.getElementById('dateQuizNext').style.display = 'inline-block';
-    confettiBurst(14);
+    confettiBurst(16);
   } else {
-    document.getElementById('dateQuizText').innerText = 'Hala siya!. Hint: Bday ni aviel 😒';
+    document.getElementById('dateQuizText').innerText = 'Hala siya! Hint: Bday ni aviel 😒';
   }
 }
 
+// ===== MOVIE DATE =====
+let noClickCount = 0;
+const noWords = ['ngek 😭', 'laina 😭', 'grabe najud 😤', 'grrrrr 😠', 'bahala jud ka 😭', 'naay Yes ouh 🥺'];
+
 function moveNo() {
   const btn = document.getElementById('noBtn');
-  const words = ['ngek 😭', 'laina 😭', 'grabe najud 😤', 'grrrrr 😠', 'bahala jud ka 😭', 'naay Yes ouh 🥺'];
-
-  window.noClickCount = (window.noClickCount || 0) + 1;
-  btn.innerText = words[(window.noClickCount - 1) % words.length];
-
+  btn.innerText = noWords[noClickCount % noWords.length];
+  noClickCount++;
   btn.style.position = 'relative';
-  btn.style.left = (Math.random() * 150 - 75) + 'px';
-  btn.style.top = (Math.random() * 70 - 25) + 'px';
+  btn.style.left = (Math.random() * 160 - 80) + 'px';
+  btn.style.top = (Math.random() * 80 - 30) + 'px';
 }
 
 function acceptedDate() {
   nextPage(8);
   typeAscii();
-  confettiBurst(45);
+  confettiBurst(55);
 }
 
 function typeAscii() {
-  const box = document.getElementById('asciiArt');
-  box.innerText = '';
-  let i = 0;
-  const timer = setInterval(() => {
-    box.innerText += asciiPhoto[i];
-    i++;
-    if (i >= asciiPhoto.length) clearInterval(timer);
-  }, 1);
+  const canvas = document.getElementById('asciiCanvas');
+  const ctx = canvas.getContext('2d');
+  const lines = asciiPhoto.split('\n');
+  const cols = Math.max(...lines.map(l => l.length));
+  const rows = lines.length;
+
+  // Step 1: measure actual character width at a known font size
+  const testSize = 20;
+  ctx.font = `${testSize}px "Courier New", monospace`;
+  const testCharW = ctx.measureText('M').width;
+
+  // Step 2: available width is the wrapper's real pixel width
+  const wrapW = canvas.parentElement.getBoundingClientRect().width || (window.innerWidth - 28);
+
+  // Step 3: scale font so columns exactly fill wrapW
+  const fontSize = Math.floor((wrapW / cols) * (testSize / testCharW));
+  const safeSize = Math.max(3, fontSize);
+
+  // Step 4: re-measure at final size
+  ctx.font = `${safeSize}px "Courier New", monospace`;
+  const charW = ctx.measureText('M').width;
+  const lineH = safeSize * 1.15;
+
+  // Step 5: set canvas dimensions
+  canvas.width  = Math.ceil(charW * cols);
+  canvas.height = Math.ceil(lineH * rows);
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // --- Typewriter state ---
+  let currentLine = 0;
+  let currentCol  = 0;
+  // chars per frame — slow enough to look like it's generating
+  const CHARS_PER_FRAME = Math.max(1, Math.floor(cols / 18));
+  let cursorVisible = true;
+  let cursorBlink = 0;
+
+  function drawCursor(lineIdx, colIdx) {
+    // blinking block cursor at current position
+    if (!cursorVisible) return;
+    ctx.save();
+    ctx.fillStyle = 'rgba(125,211,252,0.75)';
+    ctx.fillRect(colIdx * charW, lineIdx * lineH, charW * 1.1, lineH);
+    ctx.restore();
+  }
+
+  function eraseCursor(lineIdx, colIdx) {
+    ctx.clearRect(colIdx * charW - 1, lineIdx * lineH - 1, charW * 1.3, lineH + 2);
+    // redraw the char that was under cursor
+    const ch = (lines[lineIdx] || '')[colIdx];
+    if (ch) {
+      ctx.save();
+      ctx.font = `${safeSize}px "Courier New", monospace`;
+      ctx.fillStyle = '#bae6fd';
+      ctx.fillText(ch, colIdx * charW, (lineIdx + 1) * lineH);
+      ctx.restore();
+    }
+  }
+
+  function renderFrame() {
+    ctx.font = `${safeSize}px "Courier New", monospace`;
+    ctx.fillStyle = '#bae6fd';
+
+    // Draw a batch of chars this frame
+    let drawn = 0;
+    while (drawn < CHARS_PER_FRAME && currentLine < rows) {
+      const line = lines[currentLine] || '';
+      if (currentCol < line.length) {
+        const ch = line[currentCol];
+        ctx.fillText(ch, currentCol * charW, (currentLine + 1) * lineH);
+        currentCol++;
+        drawn++;
+      } else {
+        // end of line — move to next
+        currentLine++;
+        currentCol = 0;
+      }
+    }
+
+    // Scanline glow sweep — a soft horizontal highlight that moves down
+    const scanY = (currentLine / rows) * canvas.height;
+    ctx.save();
+    const scanGrad = ctx.createLinearGradient(0, scanY - lineH * 3, 0, scanY + lineH * 2);
+    scanGrad.addColorStop(0,   'rgba(125,211,252,0)');
+    scanGrad.addColorStop(0.4, 'rgba(125,211,252,0.07)');
+    scanGrad.addColorStop(0.7, 'rgba(186,230,253,0.13)');
+    scanGrad.addColorStop(1,   'rgba(125,211,252,0)');
+    ctx.fillStyle = scanGrad;
+    ctx.fillRect(0, scanY - lineH * 3, canvas.width, lineH * 5);
+    ctx.restore();
+
+    // Cursor blink
+    cursorBlink++;
+    if (cursorBlink % 28 === 0) cursorVisible = !cursorVisible;
+    if (currentLine < rows) drawCursor(currentLine, currentCol);
+
+    if (currentLine < rows) {
+      requestAnimationFrame(renderFrame);
+    } else {
+      // Done — hide cursor
+      ctx.clearRect(currentCol * charW - 1, currentLine * lineH - 1, charW * 1.3, lineH + 2);
+    }
+  }
+
+  requestAnimationFrame(renderFrame);
 }
 
-function makeBackground() {
-  const bg = document.getElementById('bg');
-  for (let i = 0; i < 22; i++) {
-    const bubble = document.createElement('div');
-    bubble.className = 'bubble';
-    bubble.style.left = Math.random() * 100 + 'vw';
-    bubble.style.width = 12 + Math.random() * 45 + 'px';
-    bubble.style.height = bubble.style.width;
-    bubble.style.animationDelay = Math.random() * 7 + 's';
-    bubble.style.animationDuration = 6 + Math.random() * 7 + 's';
-    bg.appendChild(bubble);
-  }
-  for (let i = 0; i < 30; i++) {
-    const star = document.createElement('div');
-    star.className = 'star';
-    star.innerHTML = '✦';
-    star.style.left = Math.random() * 100 + 'vw';
-    star.style.top = Math.random() * 100 + 'vh';
-    star.style.fontSize = 10 + Math.random() * 18 + 'px';
-    star.style.animationDelay = Math.random() * 2 + 's';
-    bg.appendChild(star);
-  }
-}
+// ===== ANIMATED BACKGROUND ENGINE =====
+(function() {
+  const canvas = document.getElementById('bgCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, t = 0;
 
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // --- Stars ---
+  const STAR_COUNT = 90;
+  const stars = Array.from({length: STAR_COUNT}, () => ({
+    x: Math.random(),
+    y: Math.random(),
+    r: 0.4 + Math.random() * 1.8,
+    phase: Math.random() * Math.PI * 2,
+    speed: 0.4 + Math.random() * 1.2,
+    color: Math.random() > 0.85 ? '#bae6fd' : '#ffffff',
+  }));
+
+  // --- Shooting stars ---
+  const shoots = [];
+  function spawnShoot() {
+    shoots.push({
+      x: Math.random() * W * 1.2,
+      y: Math.random() * H * 0.45,
+      len: 80 + Math.random() * 120,
+      speed: 3 + Math.random() * 4,
+      alpha: 1,
+      angle: Math.PI / 5 + (Math.random() - 0.5) * 0.3,
+      life: 0,
+      maxLife: 55 + Math.floor(Math.random() * 30),
+    });
+    setTimeout(spawnShoot, 5000 + Math.random() * 6000);
+  }
+  setTimeout(spawnShoot, 1200);
+
+  // --- Floating hearts ---
+  const HEART_COUNT = 18;
+  const hearts = Array.from({length: HEART_COUNT}, (_, i) => ({
+    x: Math.random() * W,
+    y: H + Math.random() * H,
+    size: 7 + Math.random() * 14,
+    speed: 0.08 + Math.random() * 0.18,
+    drift: (Math.random() - 0.5) * 0.18,
+    alpha: 0.08 + Math.random() * 0.18,
+    phase: Math.random() * Math.PI * 2,
+    wobble: 0.12 + Math.random() * 0.28,
+  }));
+
+  // --- Aurora blobs (rendered on canvas, smooth) ---
+  const blobs = [
+    { x: 0.15, y: 0.18, rx: 0.38, ry: 0.28, c: [2,132,199],   a: 0.22, px:0, py:0, spx:0.00006, spy:0.00005 },
+    { x: 0.78, y: 0.55, rx: 0.32, ry: 0.30, c: [3,105,161],   a: 0.18, px:1, py:1, spx:0.00005, spy:0.00007 },
+    { x: 0.45, y: 0.85, rx: 0.28, ry: 0.22, c: [56,189,248],  a: 0.15, px:2, py:2, spx:0.00008, spy:0.00006 },
+    { x: 0.62, y: 0.12, rx: 0.22, ry: 0.20, c: [125,211,252], a: 0.12, px:3, py:0, spx:0.00006, spy:0.00008 },
+    { x: 0.25, y: 0.70, rx: 0.20, ry: 0.18, c: [14,165,233],  a: 0.13, px:0, py:3, spx:0.00007, spy:0.00005 },
+  ];
+
+  function drawHeart(ctx, x, y, size) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.beginPath();
+    ctx.moveTo(0, -size * 0.3);
+    ctx.bezierCurveTo( size*0.9, -size*1.1,  size*1.7,  size*0.4, 0,  size*1.1);
+    ctx.bezierCurveTo(-size*1.7,  size*0.4, -size*0.9, -size*1.1, 0, -size*0.3);
+    ctx.closePath();
+    ctx.restore();
+  }
+
+  function frame() {
+    t++;
+    ctx.clearRect(0, 0, W, H);
+
+    // 1. Deep base gradient
+    const bg = ctx.createLinearGradient(0, 0, W * 0.4, H);
+    bg.addColorStop(0,   '#010e1f');
+    bg.addColorStop(0.5, '#03162b');
+    bg.addColorStop(1,   '#020b18');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    // 2. Aurora blobs
+    for (const b of blobs) {
+      const bx = (Math.sin(t * b.spx * 1000 + b.px) * 0.12 + b.x) * W;
+      const by = (Math.cos(t * b.spy * 1000 + b.py) * 0.10 + b.y) * H;
+      const grd = ctx.createRadialGradient(bx, by, 0, bx, by, b.rx * W);
+      grd.addColorStop(0,   `rgba(${b.c},${b.a})`);
+      grd.addColorStop(0.4, `rgba(${b.c},${b.a * 0.55})`);
+      grd.addColorStop(1,   `rgba(${b.c},0)`);
+      ctx.save();
+      ctx.scale(1, b.ry / b.rx);
+      ctx.beginPath();
+      ctx.arc(bx, by * (b.rx / b.ry), b.rx * W, 0, Math.PI * 2);
+      ctx.fillStyle = grd;
+      ctx.filter = 'blur(38px)';
+      ctx.fill();
+      ctx.filter = 'none';
+      ctx.restore();
+    }
+
+    // 3. Subtle horizontal aurora shimmer bands
+    for (let i = 0; i < 3; i++) {
+      const yPos = H * (0.22 + i * 0.28 + Math.sin(t * 0.002 + i * 2.1) * 0.06);
+      const shimmer = ctx.createLinearGradient(0, yPos - 60, 0, yPos + 60);
+      shimmer.addColorStop(0,   'rgba(56,189,248,0)');
+      shimmer.addColorStop(0.5, `rgba(56,189,248,${0.028 + Math.sin(t*0.003+i)*0.014})`);
+      shimmer.addColorStop(1,   'rgba(56,189,248,0)');
+      ctx.fillStyle = shimmer;
+      ctx.fillRect(0, yPos - 60, W, 120);
+    }
+
+    // 4. Stars with twinkle
+    for (const s of stars) {
+      const alpha = 0.18 + 0.72 * (0.5 + 0.5 * Math.sin(t * s.speed * 0.02 + s.phase));
+      ctx.beginPath();
+      ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = s.color.replace(')', `,${alpha})`).replace('rgb','rgba').replace('#ffffff', `rgba(255,255,255,${alpha})`).replace('#bae6fd', `rgba(186,230,253,${alpha})`);
+
+      // draw properly
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = s.color;
+      ctx.fill();
+
+      // cross sparkle on bigger stars
+      if (s.r > 1.3) {
+        ctx.strokeStyle = s.color;
+        ctx.globalAlpha = alpha * 0.5;
+        ctx.lineWidth = 0.5;
+        const sp = s.r * 3.5;
+        ctx.beginPath();
+        ctx.moveTo(s.x*W - sp, s.y*H); ctx.lineTo(s.x*W + sp, s.y*H);
+        ctx.moveTo(s.x*W, s.y*H - sp); ctx.lineTo(s.x*W, s.y*H + sp);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    // 5. Shooting stars
+    for (let i = shoots.length - 1; i >= 0; i--) {
+      const sh = shoots[i];
+      sh.x += Math.cos(sh.angle) * sh.speed;
+      sh.y += Math.sin(sh.angle) * sh.speed;
+      sh.life++;
+      const progress = sh.life / sh.maxLife;
+      const alpha = progress < 0.3
+        ? progress / 0.3
+        : progress > 0.7
+          ? 1 - (progress - 0.7) / 0.3
+          : 1;
+      const tailX = sh.x - Math.cos(sh.angle) * sh.len;
+      const tailY = sh.y - Math.sin(sh.angle) * sh.len;
+      const grad = ctx.createLinearGradient(tailX, tailY, sh.x, sh.y);
+      grad.addColorStop(0, `rgba(255,255,255,0)`);
+      grad.addColorStop(0.6, `rgba(186,230,253,${alpha * 0.6})`);
+      grad.addColorStop(1, `rgba(255,255,255,${alpha})`);
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(tailX, tailY);
+      ctx.lineTo(sh.x, sh.y);
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 1.5;
+      ctx.lineCap = 'round';
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = 'rgba(186,230,253,0.8)';
+      ctx.stroke();
+      ctx.restore();
+      if (sh.life >= sh.maxLife) shoots.splice(i, 1);
+    }
+
+    // 6. Floating hearts
+    for (const h of hearts) {
+      h.y -= h.speed;
+      h.x += Math.sin(t * 0.006 * h.wobble + h.phase) * h.drift;
+      if (h.y < -h.size * 2) {
+        h.y = H + h.size * 2;
+        h.x = Math.random() * W;
+      }
+      ctx.save();
+      ctx.globalAlpha = h.alpha * (0.6 + 0.4 * Math.sin(t * 0.01 + h.phase));
+      drawHeart(ctx, h.x, h.y, h.size);
+      const hg = ctx.createRadialGradient(h.x, h.y, 0, h.x, h.y, h.size * 1.5);
+      hg.addColorStop(0,   'rgba(125,211,252,0.9)');
+      hg.addColorStop(0.5, 'rgba(56,189,248,0.6)');
+      hg.addColorStop(1,   'rgba(14,165,233,0)');
+      ctx.fillStyle = hg;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  frame();
+})();
+
+
+// ===== CONFETTI =====
 function confettiBurst(amount) {
+  const colors = ['#38bdf8','#1d4ed8','#e0f2fe','#93c5fd','#ffffff','#7dd3fc','#bae6fd'];
   for (let i = 0; i < amount; i++) {
-    const confetti = document.createElement('div');
-    confetti.className = 'confetti';
-    confetti.style.left = Math.random() * 100 + 'vw';
-    confetti.style.background = ['#38bdf8', '#2563eb', '#e0f2fe', '#93c5fd', '#ffffff'][Math.floor(Math.random() * 5)];
-    confetti.style.animationDuration = 2 + Math.random() * 2 + 's';
-    document.body.appendChild(confetti);
-    setTimeout(() => confetti.remove(), 4000);
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    const size = 6 + Math.random() * 8;
+    c.style.cssText = `
+      left: ${Math.random()*100}vw;
+      width: ${size}px;
+      height: ${size}px;
+      background: ${colors[Math.floor(Math.random()*colors.length)]};
+      animation-duration: ${2+Math.random()*2.5}s;
+      border-radius: ${Math.random() > 0.5 ? '50%' : '3px'};
+    `;
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 5000);
   }
 }
 
-makeBackground();
+// ===== RIPPLE ON ALL BUTTONS =====
+document.addEventListener('pointerdown', function(e) {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  const rect = btn.getBoundingClientRect();
+  const rx = ((e.clientX - rect.left) / rect.width * 100).toFixed(1) + '%';
+  const ry = ((e.clientY - rect.top)  / rect.height * 100).toFixed(1) + '%';
+  btn.style.setProperty('--rx', rx);
+  btn.style.setProperty('--ry', ry);
+
+  // physical ripple ring
+  const ring = document.createElement('span');
+  ring.style.cssText = `
+    position:absolute;
+    border-radius:50%;
+    width:10px; height:10px;
+    left:${e.clientX - rect.left - 5}px;
+    top:${e.clientY - rect.top - 5}px;
+    background:rgba(255,255,255,0.45);
+    transform:scale(0);
+    animation:rippleRing 0.55s ease-out forwards;
+    pointer-events:none;
+    z-index:10;
+  `;
+  btn.style.position = btn.style.position || 'relative';
+  btn.style.overflow = 'hidden';
+  btn.appendChild(ring);
+  ring.addEventListener('animationend', () => ring.remove());
+});
 </script>
 </body>
 </html>
