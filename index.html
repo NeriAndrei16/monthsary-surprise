@@ -217,121 +217,106 @@ button:active {
     0 5px 14px rgba(56,189,248,0.32);
 }
 
-/* ===== STITCH CHARACTER ===== */
+/* ===== STITCH SVG HEAD ===== */
 .stitch-wrap {
-  margin: 0 auto 22px;
-  width: 160px;
-  height: 135px;
+  margin: 0 auto 18px;
+  width: 170px;
+  height: 170px;
   position: relative;
-  animation: float 2.5s ease-in-out infinite;
-  filter: drop-shadow(0 12px 25px rgba(56,189,248,0.5));
+  animation: stitchFloat 3s ease-in-out infinite;
+  filter: drop-shadow(0 14px 28px rgba(56,189,248,0.55)) drop-shadow(0 0 12px rgba(14,165,233,0.4));
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0) rotate(-2deg); }
-  50%       { transform: translateY(-12px) rotate(2deg); }
+@keyframes stitchFloat {
+  0%,100% { transform: translateY(0) rotate(-1.5deg) scale(1); }
+  30%      { transform: translateY(-10px) rotate(1.5deg) scale(1.02); }
+  60%      { transform: translateY(-6px) rotate(-1deg) scale(1.01); }
 }
 
-.face {
-  width: 120px;
-  height: 100px;
-  background: linear-gradient(135deg, #38bdf8, #0ea5e9);
-  border-radius: 50% 50% 47% 47%;
-  margin: auto;
-  position: relative;
-  border: 3px solid #0284c7;
-  box-shadow: 0 0 20px rgba(56,189,248,0.6) inset;
-}
-
-.ear {
-  position: absolute;
-  width: 55px;
-  height: 85px;
-  background: linear-gradient(135deg, #0ea5e9, #0284c7);
-  border: 3px solid #075985;
-  top: 18px;
-  z-index: -1;
-}
-
-.ear.left  { left: 1px; border-radius: 80% 20% 70% 30%; transform: rotate(-28deg); }
-.ear.right { right: 1px; border-radius: 20% 80% 30% 70%; transform: rotate(28deg); }
-
-.eye {
-  position: absolute;
-  top: 34px;
-  width: 16px;
-  height: 22px;
-  background: #03162b;
-  border-radius: 50%;
-  box-shadow: 0 0 0 3px rgba(255,255,255,0.2);
-  animation: blink 4s infinite;
-}
-
-@keyframes blink {
-  0%,95%,100% { transform: scaleY(1); }
-  97% { transform: scaleY(0.1); }
-}
-
-.eye.left  { left: 33px; }
-.eye.right { right: 33px; }
-
-.eye-shine {
-  width: 5px;
-  height: 5px;
-  background: white;
-  border-radius: 50%;
-  position: absolute;
-  top: 3px;
-  left: 3px;
-}
-
-.nose {
-  position: absolute;
-  top: 56px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 28px;
-  height: 18px;
-  background: #082f49;
-  border-radius: 50%;
-}
-
-.mouth {
-  position: absolute;
-  top: 74px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 40px;
-  height: 18px;
-  border-bottom: 4px solid #082f49;
-  border-radius: 50%;
-}
-
-.stitch-antenna {
-  position: absolute;
-  top: -22px;
-  left: 50%;
-  transform: translateX(-50%);
+/* ===== ANIMATED TITLE (page 1) ===== */
+.hi-title {
+  font-family: 'Pacifico', cursive;
+  font-size: clamp(38px, 12vw, 54px);
+  line-height: 1.15;
+  margin-bottom: 4px;
   display: flex;
-  gap: 28px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: nowrap;
+  letter-spacing: 1px;
 }
 
-.antenna-stick {
-  width: 3px;
-  height: 20px;
-  background: #0ea5e9;
-  border-radius: 99px;
+.hi-word {
+  display: inline-flex;
+  gap: 1px;
+  color: #ffffff;
+  text-shadow:
+    0 0 20px rgba(56,189,248,0.9),
+    0 0 40px rgba(56,189,248,0.5),
+    0 3px 8px rgba(0,0,0,0.3);
+  animation: titleSlideIn 0.75s cubic-bezier(0.34,1.56,0.64,1) both;
 }
 
-.antenna-stick::after {
-  content: '';
-  display: block;
-  width: 8px;
-  height: 8px;
-  background: var(--blue-light);
-  border-radius: 50%;
-  margin-left: -2.5px;
-  margin-top: -3px;
+.hi-word:nth-child(1) { animation-delay: 0.05s; }
+.hi-word:nth-child(2) { animation-delay: 0.2s; }
+
+@keyframes titleSlideIn {
+  from { opacity: 0; transform: translateY(24px) scale(0.75); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* each letter waves */
+.hi-word span {
+  display: inline-block;
+  animation: letterWave 2.2s ease-in-out infinite;
+  color: #ffffff;
+}
+
+.hi-word span:nth-child(1) { animation-delay: 0.00s; }
+.hi-word span:nth-child(2) { animation-delay: 0.09s; }
+.hi-word span:nth-child(3) { animation-delay: 0.18s; }
+.hi-word span:nth-child(4) { animation-delay: 0.27s; }
+.hi-word span:nth-child(5) { animation-delay: 0.36s; }
+.hi-word span:nth-child(6) { animation-delay: 0.45s; }
+
+@keyframes letterWave {
+  0%,55%,100% { transform: translateY(0); }
+  25%          { transform: translateY(-7px); }
+}
+
+/* animated beating heart */
+.hi-heart {
+  display: inline-block;
+  font-size: clamp(30px, 9vw, 42px);
+  animation: heartBeat 1.5s ease-in-out infinite,
+             heartAppear 0.65s 0.45s cubic-bezier(0.34,1.56,0.64,1) both;
+  filter: drop-shadow(0 0 12px rgba(96,165,250,0.95));
+  line-height: 1;
+}
+
+@keyframes heartBeat {
+  0%,100% { transform: scale(1); }
+  14%     { transform: scale(1.32); }
+  28%     { transform: scale(0.96); }
+  42%     { transform: scale(1.18); }
+  56%     { transform: scale(1); }
+}
+
+@keyframes heartAppear {
+  from { opacity: 0; transform: scale(0) rotate(-20deg); }
+  to   { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+
+/* SVG eye blink */
+.stitch-wrap svg ellipse.eye-blink {
+  animation: svgBlink 4.5s ease-in-out infinite;
+  transform-origin: center;
+}
+@keyframes svgBlink {
+  0%,92%,100% { transform: scaleY(1); }
+  95%          { transform: scaleY(0.08); }
 }
 
 /* ===== PROGRESS BAR ===== */
@@ -542,29 +527,125 @@ input:focus {
   box-shadow: 0 0 20px rgba(56,189,248,0.3);
 }
 
+
 /* ===== LETTER ===== */
 .letter-card {
   background: rgba(255,255,255,0.07);
   border: 1px solid rgba(125,211,252,0.25);
   border-radius: 24px;
-  padding: 20px 18px;
+  padding: 0;
   margin: 14px 0;
   text-align: left;
+  position: relative;
+  overflow: hidden;
 }
+
+.letter-scroll {
+  max-height: 52vh;
+  overflow-y: auto;
+  padding: 20px 18px 16px;
+  scroll-behavior: smooth;
+  /* hide default scrollbar on webkit */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(56,189,248,0.4) transparent;
+}
+
+.letter-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.letter-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.letter-scroll::-webkit-scrollbar-thumb {
+  background: rgba(56,189,248,0.45);
+  border-radius: 99px;
+}
+
+/* fade mask top */
+.letter-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 38px;
+  background: linear-gradient(to bottom, rgba(10,25,50,0.85), transparent);
+  border-radius: 24px 24px 0 0;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+/* fade mask bottom */
+.letter-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 46px;
+  background: linear-gradient(to top, rgba(10,25,50,0.92), transparent);
+  border-radius: 0 0 24px 24px;
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity 0.3s;
+}
+
+.letter-card.scrolled-top::before  { opacity: 1; }
+.letter-card.scrolled-bottom::after { opacity: 0; }
 
 .letter-card p {
   font-size: 15px;
-  line-height: 1.8;
+  line-height: 1.85;
   max-width: none;
   color: rgba(255,255,255,0.92);
+  margin-bottom: 12px;
 }
+
+.letter-card p:last-child { margin-bottom: 0; }
 
 .letter-deco {
   font-size: 28px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   display: block;
   text-align: center;
 }
+
+.letter-salutation {
+  font-size: 15px;
+  font-weight: 700;
+  color: #7dd3fc;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.letter-sign {
+  font-size: 14px;
+  color: rgba(125,211,252,0.85);
+  font-style: italic;
+  margin-top: 14px;
+  display: block;
+}
+
+/* scroll hint pill */
+.scroll-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 11.5px;
+  color: rgba(125,211,252,0.7);
+  font-weight: 600;
+  margin-top: 7px;
+  animation: hintBob 1.8s ease-in-out infinite;
+  letter-spacing: 0.3px;
+}
+
+.scroll-hint svg {
+  animation: hintBob 1.8s ease-in-out infinite;
+}
+
+@keyframes hintBob {
+  0%,100% { transform: translateY(0); opacity: 0.7; }
+  50%      { transform: translateY(3px); opacity: 1; }
+}
+
 
 /* ===== FINAL PAGE ===== */
 .final-heart {
@@ -688,27 +769,142 @@ input:focus {
 <div class="page active" id="page1">
   <div class="step-dots" id="dots1"></div>
   <div class="card">
+
+    <!-- Improved SVG Stitch Head -->
     <div class="stitch-wrap">
-      <div class="stitch-antenna">
-        <div class="antenna-stick"></div>
-        <div class="antenna-stick"></div>
-      </div>
-      <div class="ear left"></div>
-      <div class="ear right"></div>
-      <div class="face">
-        <div class="eye left"><div class="eye-shine"></div></div>
-        <div class="eye right"><div class="eye-shine"></div></div>
-        <div class="nose"></div>
-        <div class="mouth"></div>
-      </div>
+      <svg viewBox="0 0 200 210" xmlns="http://www.w3.org/2000/svg" width="180" height="189">
+        <defs>
+          <radialGradient id="sg_head" cx="45%" cy="38%" r="62%">
+            <stop offset="0%"   stop-color="#7ae3ff"/>
+            <stop offset="45%"  stop-color="#2bb5e8"/>
+            <stop offset="100%" stop-color="#0779b8"/>
+          </radialGradient>
+          <radialGradient id="sg_ear" cx="38%" cy="30%" r="65%">
+            <stop offset="0%"   stop-color="#55d0f8"/>
+            <stop offset="100%" stop-color="#0672a8"/>
+          </radialGradient>
+          <radialGradient id="sg_muzzle" cx="45%" cy="35%" r="58%">
+            <stop offset="0%"   stop-color="#aaeeff"/>
+            <stop offset="100%" stop-color="#4dc8f0"/>
+          </radialGradient>
+          <radialGradient id="sg_nose" cx="40%" cy="30%" r="60%">
+            <stop offset="0%"   stop-color="#1b3d5e"/>
+            <stop offset="100%" stop-color="#050f1c"/>
+          </radialGradient>
+          <radialGradient id="sg_eye_l" cx="38%" cy="32%" r="60%">
+            <stop offset="0%"  stop-color="#2a4a6e"/>
+            <stop offset="100%" stop-color="#08182c"/>
+          </radialGradient>
+          <filter id="sg_soft" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="1.8"/>
+          </filter>
+          <filter id="sg_glow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="4" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- ── LEFT EAR (tall, slightly tilted) ── -->
+        <ellipse cx="44" cy="75" rx="32" ry="52"
+          transform="rotate(-18 44 75)"
+          fill="url(#sg_ear)" stroke="#0565a0" stroke-width="2.2"/>
+        <!-- ear inner darker -->
+        <ellipse cx="44" cy="78" rx="18" ry="32"
+          transform="rotate(-18 44 78)"
+          fill="#0a7fc4" opacity="0.45"/>
+        <!-- ear tip highlight -->
+        <ellipse cx="36" cy="42" rx="7" ry="4"
+          transform="rotate(-18 36 42)"
+          fill="white" opacity="0.18"/>
+
+        <!-- ── RIGHT EAR ── -->
+        <ellipse cx="156" cy="75" rx="32" ry="52"
+          transform="rotate(18 156 75)"
+          fill="url(#sg_ear)" stroke="#0565a0" stroke-width="2.2"/>
+        <ellipse cx="156" cy="78" rx="18" ry="32"
+          transform="rotate(18 156 78)"
+          fill="#0a7fc4" opacity="0.45"/>
+        <ellipse cx="164" cy="42" rx="7" ry="4"
+          transform="rotate(18 164 42)"
+          fill="white" opacity="0.18"/>
+
+        <!-- ── HEAD (wide, flat-bottom Stitch shape) ── -->
+        <ellipse cx="100" cy="135" rx="72" ry="68" fill="url(#sg_head)" stroke="#0672a8" stroke-width="2.5"/>
+
+        <!-- head top highlight -->
+        <ellipse cx="82" cy="100" rx="28" ry="16" fill="white" opacity="0.14" transform="rotate(-8 82 100)"/>
+
+        <!-- ── ANTENNAE ── -->
+        <!-- left antenna -->
+        <path d="M78 90 Q68 62 60 38" stroke="#1ab8f0" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <circle cx="59" cy="34" r="7" fill="#90e4ff" stroke="#0fa8e0" stroke-width="2"/>
+        <circle cx="59" cy="34" r="3.5" fill="white" opacity="0.7"/>
+        <!-- right antenna -->
+        <path d="M122 90 Q132 62 140 38" stroke="#1ab8f0" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <circle cx="141" cy="34" r="7" fill="#90e4ff" stroke="#0fa8e0" stroke-width="2"/>
+        <circle cx="141" cy="34" r="3.5" fill="white" opacity="0.7"/>
+
+        <!-- ── MUZZLE (protruding snout) ── -->
+        <ellipse cx="100" cy="162" rx="36" ry="24" fill="url(#sg_muzzle)" stroke="#3abfe6" stroke-width="1.5"/>
+        <ellipse cx="92" cy="155" rx="10" ry="5" fill="white" opacity="0.2" transform="rotate(-10 92 155)"/>
+
+        <!-- ── NOSE ── -->
+        <ellipse cx="100" cy="150" rx="14" ry="9" fill="url(#sg_nose)"/>
+        <ellipse cx="95" cy="147" rx="4" ry="2.5" fill="white" opacity="0.3"/>
+
+        <!-- ── LEFT EYE ── -->
+        <!-- white sclera -->
+        <ellipse cx="70" cy="125" rx="16" ry="19" fill="white"/>
+        <!-- iris -->
+        <ellipse cx="70" cy="127" rx="11" ry="13" fill="url(#sg_eye_l)"/>
+        <!-- pupil -->
+        <ellipse cx="70" cy="128" rx="6.5" ry="8" fill="#040d18"/>
+        <!-- main shine -->
+        <ellipse cx="65" cy="121" rx="4" ry="4.5" fill="white" opacity="0.95"/>
+        <!-- small shine -->
+        <ellipse cx="74" cy="131" rx="2" ry="2" fill="white" opacity="0.55"/>
+        <!-- eyelid top (for blink) -->
+        <ellipse cx="70" cy="117" rx="16" ry="4" fill="#2bb5e8" id="s_lid_l"/>
+
+        <!-- ── RIGHT EYE ── -->
+        <ellipse cx="130" cy="125" rx="16" ry="19" fill="white"/>
+        <ellipse cx="130" cy="127" rx="11" ry="13" fill="url(#sg_eye_l)"/>
+        <ellipse cx="130" cy="128" rx="6.5" ry="8" fill="#040d18"/>
+        <ellipse cx="125" cy="121" rx="4" ry="4.5" fill="white" opacity="0.95"/>
+        <ellipse cx="134" cy="131" rx="2" ry="2" fill="white" opacity="0.55"/>
+        <ellipse cx="130" cy="117" rx="16" ry="4" fill="#2bb5e8" id="s_lid_r"/>
+
+        <!-- ── MOUTH (wide happy grin) ── -->
+        <path d="M72 170 Q100 188 128 170" stroke="#065585" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <!-- lower lip / chin -->
+        <path d="M78 172 Q100 184 122 172 Q118 180 100 182 Q82 180 78 172Z" fill="white" opacity="0.88"/>
+
+        <!-- ── WHISKERS ── -->
+        <line x1="16"  y1="148" x2="68"  y2="158" stroke="#0672a8" stroke-width="1.8" stroke-linecap="round" opacity="0.65"/>
+        <line x1="14"  y1="162" x2="67"  y2="166" stroke="#0672a8" stroke-width="1.8" stroke-linecap="round" opacity="0.65"/>
+        <line x1="184" y1="148" x2="132" y2="158" stroke="#0672a8" stroke-width="1.8" stroke-linecap="round" opacity="0.65"/>
+        <line x1="186" y1="162" x2="133" y2="166" stroke="#0672a8" stroke-width="1.8" stroke-linecap="round" opacity="0.65"/>
+
+        <!-- ── CHEEK BLUSH ── -->
+        <ellipse cx="60"  cy="148" rx="14" ry="8" fill="#5cd8ff" opacity="0.22"/>
+        <ellipse cx="140" cy="148" rx="14" ry="8" fill="#5cd8ff" opacity="0.22"/>
+      </svg>
     </div>
-    <h1>Hi Spoo 💙</h1>
+
+    <!-- Animated Title -->
+    <div class="hi-title">
+      <span class="hi-word"><span>H</span><span>I</span></span>
+      <span class="hi-word"><span>S</span><span>P</span><span>O</span><span>O</span></span>
+      <span class="hi-heart">💙</span>
+    </div>
+
     <div class="divider"></div>
-    <p>Nay koi gamayng suprise sa imoha 🥺</p>
+    <p>nay koi gamayng suprise sa imoha 🥺</p>
     <p class="small">Tap the button to begin hehe~</p>
     <button class="blue-btn" onclick="nextPage(2)">Start Surprise 🛸</button>
   </div>
 </div>
+
 
 <!-- PAGE 2 -->
 <div class="page" id="page2">
@@ -720,10 +916,10 @@ input:focus {
     <p class="small" id="heartText">0 / 3 hearts found</p>
     <div class="heart-grid">
       <button class="heart-box" data-item="💙" onclick="openBox(this)">🎁</button>
-      <button class="heart-box" data-item="💩" onclick="openBox(this)">🎁</button>
-      <button class="heart-box" data-item="🐷" onclick="openBox(this)">🎁</button>
+      <button class="heart-box" data-item="🛸" onclick="openBox(this)">🎁</button>
+      <button class="heart-box" data-item="👽" onclick="openBox(this)">🎁</button>
       <button class="heart-box" data-item="💙" onclick="openBox(this)">🎁</button>
-      <button class="heart-box" data-item="😆" onclick="openBox(this)">🎁</button>
+      <button class="heart-box" data-item="🌊" onclick="openBox(this)">🎁</button>
       <button class="heart-box" data-item="💙" onclick="openBox(this)">🎁</button>
     </div>
     <p class="small" id="boxMessage">Tap a box to open or close it hehe 🎁</p>
@@ -785,23 +981,31 @@ input:focus {
   <div class="step-dots" id="dots6"></div>
   <div class="card">
     <h1>My Letter 💌</h1>
-    <div class="letter-card">
-      <span class="letter-deco">💙</span>
-      <p>
-        My love,
 
-This coming May 27 marks our 8th monthsary, and I just want to remind you how thankful I am to have you in my life. These past 8 months with you have been filled with love, happiness, lessons, and memories that I will always treasure.
+    <div class="letter-card scrolled-bottom" id="letterCard">
+      <div class="letter-scroll" id="letterScroll">
+        <span class="letter-deco">💙</span>
+        <span class="letter-salutation">My love,</span>
 
-Thank you for staying by my side, for understanding me, supporting me, and loving me in your own special way. You make my days better, and your presence gives me comfort even during the times when life feels heavy. I may not be perfect, but I promise that my love for you is always real and sincere.
+        <p>This coming May 27 marks our 8th monthsary, and I just want to remind you how thankful I am to have you in my life. These past 8 months with you have been filled with love, happiness, lessons, and memories that I will always treasure.</p>
 
-Every moment with you means so much to me. From our simple talks, laughs, little tampuhans, and sweet memories, everything has become special because it is with you. I am grateful for your patience, your care, and the love you continue to give me.
+        <p>Thank you for staying by my side, for understanding me, supporting me, and loving me in your own special way. You make my days better, and your presence gives me comfort even during the times when life feels heavy. I may not be perfect, but I promise that my love for you is always real and sincere.</p>
 
-Happy 8th monthsary, my love. I hope we continue to grow together, understand each other more, and love each other deeper as time goes by. I love you so much, and I am always thankful that I get to call you mine.
+        <p>Every moment with you means so much to me. From our simple talks, laughs, little tampuhans, and sweet memories, everything has become special because it is with you. I am grateful for your patience, your care, and the love you continue to give me.</p>
 
-Forever grateful for you,
-Your love
-      </p>
+        <p>Happy 8th monthsary, my love. I hope we continue to grow together, understand each other more, and love each other deeper as time goes by. I love you so much, and I am always thankful that I get to call you mine.</p>
+
+        <span class="letter-sign">Forever grateful for you,<br>Your love 💙</span>
+      </div>
     </div>
+
+    <div class="scroll-hint" id="scrollHint">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path d="M2 4l4 4 4-4" stroke="#7dd3fc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      scroll to read more
+    </div>
+
     <button class="blue-btn" onclick="nextPage(7)">Next ➡️</button>
   </div>
 </div>
@@ -1027,116 +1231,93 @@ function moveNo() {
 
 function acceptedDate() {
   nextPage(8);
-  typeAscii();
+  setTimeout(typeAscii, 120); // wait for page to paint before measuring canvas width
   confettiBurst(55);
 }
 
 function typeAscii() {
   const canvas = document.getElementById('asciiCanvas');
-  const ctx = canvas.getContext('2d');
-  const lines = asciiPhoto.split('\n');
-  const cols = Math.max(...lines.map(l => l.length));
-  const rows = lines.length;
+  const ctx    = canvas.getContext('2d');
 
-  // Step 1: measure actual character width at a known font size
-  const testSize = 20;
-  ctx.font = `${testSize}px "Courier New", monospace`;
-  const testCharW = ctx.measureText('M').width;
+  const lines = asciiPhoto.split('\n').filter(l => l.length > 0);
+  const rows  = lines.length;
+  const cols  = Math.max(...lines.map(l => l.length));
 
-  // Step 2: available width is the wrapper's real pixel width
-  const wrapW = canvas.parentElement.getBoundingClientRect().width || (window.innerWidth - 28);
+  // ── Use a fixed font size that's always readable ──
+  // Canvas renders at this true size; CSS width:100% scales it down to fit screen.
+  const FONT_SIZE = 7;           // px — minimum crisp on canvas
+  const CHAR_W    = FONT_SIZE * 0.602; // Courier New monospace ratio
+  const LINE_H    = FONT_SIZE * 1.22;
 
-  // Step 3: scale font so columns exactly fill wrapW
-  const fontSize = Math.floor((wrapW / cols) * (testSize / testCharW));
-  const safeSize = Math.max(3, fontSize);
+  // Set canvas PIXEL dimensions (large — CSS will shrink it)
+  canvas.width  = Math.ceil(CHAR_W * cols);
+  canvas.height = Math.ceil(LINE_H * rows);
 
-  // Step 4: re-measure at final size
-  ctx.font = `${safeSize}px "Courier New", monospace`;
-  const charW = ctx.measureText('M').width;
-  const lineH = safeSize * 1.15;
+  // Dark background
+  ctx.fillStyle = '#010d1c';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Step 5: set canvas dimensions
-  canvas.width  = Math.ceil(charW * cols);
-  canvas.height = Math.ceil(lineH * rows);
+  ctx.font         = `${FONT_SIZE}px "Courier New", monospace`;
+  ctx.textBaseline = 'top';
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // ── Typewriter state ──
+  let li = 0, ci = 0;
+  // ~3 lines per frame → slow enough to look like generating
+  const CHARS_PER_FRAME = cols * 3;
+  let cursorOn = true, blinkTick = 0;
 
-  // --- Typewriter state ---
-  let currentLine = 0;
-  let currentCol  = 0;
-  // chars per frame — slow enough to look like it's generating
-  const CHARS_PER_FRAME = Math.max(1, Math.floor(cols / 18));
-  let cursorVisible = true;
-  let cursorBlink = 0;
+  function render() {
+    ctx.font         = `${FONT_SIZE}px "Courier New", monospace`;
+    ctx.textBaseline = 'top';
 
-  function drawCursor(lineIdx, colIdx) {
-    // blinking block cursor at current position
-    if (!cursorVisible) return;
-    ctx.save();
-    ctx.fillStyle = 'rgba(125,211,252,0.75)';
-    ctx.fillRect(colIdx * charW, lineIdx * lineH, charW * 1.1, lineH);
-    ctx.restore();
-  }
+    // Erase old cursor
+    ctx.fillStyle = '#010d1c';
+    ctx.fillRect(Math.floor(ci * CHAR_W), Math.floor(li * LINE_H), Math.ceil(CHAR_W) + 1, Math.ceil(LINE_H) + 1);
 
-  function eraseCursor(lineIdx, colIdx) {
-    ctx.clearRect(colIdx * charW - 1, lineIdx * lineH - 1, charW * 1.3, lineH + 2);
-    // redraw the char that was under cursor
-    const ch = (lines[lineIdx] || '')[colIdx];
-    if (ch) {
-      ctx.save();
-      ctx.font = `${safeSize}px "Courier New", monospace`;
-      ctx.fillStyle = '#bae6fd';
-      ctx.fillText(ch, colIdx * charW, (lineIdx + 1) * lineH);
-      ctx.restore();
-    }
-  }
-
-  function renderFrame() {
-    ctx.font = `${safeSize}px "Courier New", monospace`;
-    ctx.fillStyle = '#bae6fd';
-
-    // Draw a batch of chars this frame
+    // Draw batch
     let drawn = 0;
-    while (drawn < CHARS_PER_FRAME && currentLine < rows) {
-      const line = lines[currentLine] || '';
-      if (currentCol < line.length) {
-        const ch = line[currentCol];
-        ctx.fillText(ch, currentCol * charW, (currentLine + 1) * lineH);
-        currentCol++;
+    while (drawn < CHARS_PER_FRAME && li < rows) {
+      const line = lines[li];
+      if (ci < line.length) {
+        const ch    = line[ci];
+        const dense = '@%#*+'.includes(ch);
+        ctx.fillStyle = dense ? '#dff4ff' : '#5ec8f0';
+        ctx.fillText(ch, Math.floor(ci * CHAR_W), Math.floor(li * LINE_H));
+        ci++;
         drawn++;
       } else {
-        // end of line — move to next
-        currentLine++;
-        currentCol = 0;
+        li++;
+        ci = 0;
+        if (li >= rows) break;
       }
     }
 
-    // Scanline glow sweep — a soft horizontal highlight that moves down
-    const scanY = (currentLine / rows) * canvas.height;
-    ctx.save();
-    const scanGrad = ctx.createLinearGradient(0, scanY - lineH * 3, 0, scanY + lineH * 2);
-    scanGrad.addColorStop(0,   'rgba(125,211,252,0)');
-    scanGrad.addColorStop(0.4, 'rgba(125,211,252,0.07)');
-    scanGrad.addColorStop(0.7, 'rgba(186,230,253,0.13)');
-    scanGrad.addColorStop(1,   'rgba(125,211,252,0)');
-    ctx.fillStyle = scanGrad;
-    ctx.fillRect(0, scanY - lineH * 3, canvas.width, lineH * 5);
-    ctx.restore();
+    if (li < rows) {
+      // Scanline sweep
+      const sy = li * LINE_H;
+      ctx.save();
+      const sg = ctx.createLinearGradient(0, sy - LINE_H * 3, 0, sy + LINE_H * 3);
+      sg.addColorStop(0,    'rgba(56,189,248,0)');
+      sg.addColorStop(0.5,  'rgba(56,189,248,0.09)');
+      sg.addColorStop(0.75, 'rgba(186,230,253,0.18)');
+      sg.addColorStop(1,    'rgba(56,189,248,0)');
+      ctx.fillStyle = sg;
+      ctx.fillRect(0, sy - LINE_H * 3, canvas.width, LINE_H * 6);
+      ctx.restore();
 
-    // Cursor blink
-    cursorBlink++;
-    if (cursorBlink % 28 === 0) cursorVisible = !cursorVisible;
-    if (currentLine < rows) drawCursor(currentLine, currentCol);
+      // Blinking block cursor
+      blinkTick++;
+      if (blinkTick % 20 === 0) cursorOn = !cursorOn;
+      if (cursorOn) {
+        ctx.fillStyle = 'rgba(94,200,240,0.85)';
+        ctx.fillRect(Math.floor(ci * CHAR_W), Math.floor(li * LINE_H), Math.ceil(CHAR_W), Math.ceil(LINE_H));
+      }
 
-    if (currentLine < rows) {
-      requestAnimationFrame(renderFrame);
-    } else {
-      // Done — hide cursor
-      ctx.clearRect(currentCol * charW - 1, currentLine * lineH - 1, charW * 1.3, lineH + 2);
+      requestAnimationFrame(render);
     }
   }
 
-  requestAnimationFrame(renderFrame);
+  requestAnimationFrame(render);
 }
 
 // ===== ANIMATED BACKGROUND ENGINE =====
@@ -1360,6 +1541,35 @@ function confettiBurst(amount) {
     setTimeout(() => c.remove(), 5000);
   }
 }
+
+// ===== LETTER SCROLL LISTENER =====
+(function() {
+  function initLetterScroll() {
+    const scroll = document.getElementById('letterScroll');
+    const card   = document.getElementById('letterCard');
+    const hint   = document.getElementById('scrollHint');
+    if (!scroll) return;
+
+    scroll.addEventListener('scroll', function() {
+      const atTop    = scroll.scrollTop < 8;
+      const atBottom = scroll.scrollTop + scroll.clientHeight >= scroll.scrollHeight - 8;
+
+      card.classList.toggle('scrolled-top',    !atTop);
+      card.classList.toggle('scrolled-bottom', atBottom);
+
+      // hide scroll hint once they start scrolling
+      if (scroll.scrollTop > 10) hint.style.opacity = '0';
+      else hint.style.opacity = '1';
+    });
+  }
+
+  // init when page6 becomes visible
+  const observer = new MutationObserver(() => {
+    const p6 = document.getElementById('page6');
+    if (p6 && p6.classList.contains('active')) initLetterScroll();
+  });
+  observer.observe(document.body, { subtree: true, attributes: true, attributeFilter: ['class'] });
+})();
 
 // ===== RIPPLE ON ALL BUTTONS =====
 document.addEventListener('pointerdown', function(e) {
