@@ -43,6 +43,7 @@ body {
   height: 100%;
   z-index: 0;
   pointer-events: none;
+  opacity: 1;
 }
 
 /* ===== PAGES ===== */
@@ -1341,62 +1342,82 @@ window.addEventListener('resize', () => {
   const canvas = document.getElementById('bgCanvas');
   const ctx = canvas.getContext('2d');
   let W, H, t = 0;
+  const DPR = Math.min(window.devicePixelRatio || 1, 1.5);
 
   function resize() {
-    W = canvas.width  = window.innerWidth;
-    H = canvas.height = window.innerHeight;
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width  = Math.floor(W * DPR);
+    canvas.height = Math.floor(H * DPR);
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   }
   resize();
   window.addEventListener('resize', resize);
 
+  const isMobile = window.innerWidth <= 768;
+
   // --- Stars ---
-  const STAR_COUNT = 90;
+  const STAR_COUNT = isMobile ? 70 : 110;
   const stars = Array.from({length: STAR_COUNT}, () => ({
     x: Math.random(),
     y: Math.random(),
-    r: 0.4 + Math.random() * 1.8,
+    r: 0.35 + Math.random() * 1.9,
     phase: Math.random() * Math.PI * 2,
-    speed: 0.4 + Math.random() * 1.2,
-    color: Math.random() > 0.85 ? '#bae6fd' : '#ffffff',
+    speed: 0.35 + Math.random() * 1.15,
+    drift: (Math.random() - 0.5) * 0.00008,
+    color: Math.random() > 0.82 ? '#bae6fd' : '#ffffff',
+  }));
+
+  // --- Nebula particles / glowing dust ---
+  const DUST_COUNT = isMobile ? 16 : 26;
+  const dust = Array.from({ length: DUST_COUNT }, () => ({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    r: 28 + Math.random() * 95,
+    alpha: 0.03 + Math.random() * 0.05,
+    vx: -0.08 + Math.random() * 0.16,
+    vy: -0.05 + Math.random() * 0.10,
+    hue: Math.random() > 0.5 ? '56,189,248' : '14,165,233'
   }));
 
   // --- Shooting stars ---
   const shoots = [];
   function spawnShoot() {
     shoots.push({
-      x: Math.random() * W * 1.2,
+      x: Math.random() * W * 1.15,
       y: Math.random() * H * 0.45,
-      len: 80 + Math.random() * 120,
+      len: 90 + Math.random() * 130,
       speed: 3 + Math.random() * 4,
-      alpha: 1,
-      angle: Math.PI / 5 + (Math.random() - 0.5) * 0.3,
+      angle: Math.PI / 5 + (Math.random() - 0.5) * 0.34,
       life: 0,
-      maxLife: 55 + Math.floor(Math.random() * 30),
+      maxLife: 55 + Math.floor(Math.random() * 35),
     });
-    setTimeout(spawnShoot, 5000 + Math.random() * 6000);
+    setTimeout(spawnShoot, 4800 + Math.random() * 6500);
   }
   setTimeout(spawnShoot, 1200);
 
   // --- Floating hearts ---
-  const HEART_COUNT = 18;
-  const hearts = Array.from({length: HEART_COUNT}, (_, i) => ({
+  const HEART_COUNT = isMobile ? 12 : 18;
+  const hearts = Array.from({length: HEART_COUNT}, () => ({
     x: Math.random() * W,
     y: H + Math.random() * H,
     size: 7 + Math.random() * 14,
     speed: 0.08 + Math.random() * 0.18,
     drift: (Math.random() - 0.5) * 0.18,
-    alpha: 0.08 + Math.random() * 0.18,
+    alpha: 0.06 + Math.random() * 0.14,
     phase: Math.random() * Math.PI * 2,
     wobble: 0.12 + Math.random() * 0.28,
   }));
 
-  // --- Aurora blobs (rendered on canvas, smooth) ---
+  // --- Aurora blobs ---
   const blobs = [
-    { x: 0.15, y: 0.18, rx: 0.38, ry: 0.28, c: [2,132,199],   a: 0.22, px:0, py:0, spx:0.00006, spy:0.00005 },
-    { x: 0.78, y: 0.55, rx: 0.32, ry: 0.30, c: [3,105,161],   a: 0.18, px:1, py:1, spx:0.00005, spy:0.00007 },
-    { x: 0.45, y: 0.85, rx: 0.28, ry: 0.22, c: [56,189,248],  a: 0.15, px:2, py:2, spx:0.00008, spy:0.00006 },
-    { x: 0.62, y: 0.12, rx: 0.22, ry: 0.20, c: [125,211,252], a: 0.12, px:3, py:0, spx:0.00006, spy:0.00008 },
-    { x: 0.25, y: 0.70, rx: 0.20, ry: 0.18, c: [14,165,233],  a: 0.13, px:0, py:3, spx:0.00007, spy:0.00005 },
+    { x: 0.15, y: 0.18, rx: 0.38, ry: 0.28, c: [2,132,199],   a: 0.24, px:0, py:0, spx:0.00006, spy:0.00005 },
+    { x: 0.78, y: 0.55, rx: 0.32, ry: 0.30, c: [3,105,161],   a: 0.20, px:1, py:1, spx:0.00005, spy:0.00007 },
+    { x: 0.45, y: 0.85, rx: 0.28, ry: 0.22, c: [56,189,248],  a: 0.17, px:2, py:2, spx:0.00008, spy:0.00006 },
+    { x: 0.62, y: 0.12, rx: 0.22, ry: 0.20, c: [125,211,252], a: 0.14, px:3, py:0, spx:0.00006, spy:0.00008 },
+    { x: 0.25, y: 0.70, rx: 0.20, ry: 0.18, c: [14,165,233],  a: 0.14, px:0, py:3, spx:0.00007, spy:0.00005 },
   ];
 
   function drawHeart(ctx, x, y, size) {
@@ -1414,88 +1435,111 @@ window.addEventListener('resize', () => {
     t++;
     ctx.clearRect(0, 0, W, H);
 
-    // 1. Deep base gradient
-    const bg = ctx.createLinearGradient(0, 0, W * 0.4, H);
+    // 1. Deep base gradient with slow breathing glow
+    const pulse = 0.5 + 0.5 * Math.sin(t * 0.0035);
+    const bg = ctx.createLinearGradient(0, 0, W * 0.45, H);
     bg.addColorStop(0,   '#010e1f');
-    bg.addColorStop(0.5, '#03162b');
+    bg.addColorStop(0.45,'#03162b');
     bg.addColorStop(1,   '#020b18');
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, W, H);
 
-    // 2. Aurora blobs
+    // soft center glow
+    const glow = ctx.createRadialGradient(W * 0.5, H * 0.42, 0, W * 0.5, H * 0.42, Math.max(W, H) * 0.7);
+    glow.addColorStop(0, `rgba(14,165,233,${0.04 + pulse * 0.03})`);
+    glow.addColorStop(0.4, `rgba(56,189,248,${0.02 + pulse * 0.02})`);
+    glow.addColorStop(1, 'rgba(2,8,23,0)');
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, W, H);
+
+    // 2. Drifting glowing dust / nebula spots
+    for (const d of dust) {
+      d.x += d.vx;
+      d.y += d.vy;
+      if (d.x < -d.r) d.x = W + d.r;
+      if (d.x > W + d.r) d.x = -d.r;
+      if (d.y < -d.r) d.y = H + d.r;
+      if (d.y > H + d.r) d.y = -d.r;
+      const dg = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, d.r);
+      dg.addColorStop(0, `rgba(${d.hue},${d.alpha})`);
+      dg.addColorStop(0.55, `rgba(${d.hue},${d.alpha * 0.38})`);
+      dg.addColorStop(1, `rgba(${d.hue},0)`);
+      ctx.fillStyle = dg;
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // 3. Aurora blobs
     for (const b of blobs) {
       const bx = (Math.sin(t * b.spx * 1000 + b.px) * 0.12 + b.x) * W;
       const by = (Math.cos(t * b.spy * 1000 + b.py) * 0.10 + b.y) * H;
       const grd = ctx.createRadialGradient(bx, by, 0, bx, by, b.rx * W);
       grd.addColorStop(0,   `rgba(${b.c},${b.a})`);
-      grd.addColorStop(0.4, `rgba(${b.c},${b.a * 0.55})`);
+      grd.addColorStop(0.42,`rgba(${b.c},${b.a * 0.58})`);
       grd.addColorStop(1,   `rgba(${b.c},0)`);
       ctx.save();
       ctx.scale(1, b.ry / b.rx);
       ctx.beginPath();
       ctx.arc(bx, by * (b.rx / b.ry), b.rx * W, 0, Math.PI * 2);
       ctx.fillStyle = grd;
-      ctx.filter = 'blur(38px)';
+      ctx.filter = 'blur(42px)';
       ctx.fill();
       ctx.filter = 'none';
       ctx.restore();
     }
 
-    // 3. Subtle horizontal aurora shimmer bands
-    for (let i = 0; i < 3; i++) {
-      const yPos = H * (0.22 + i * 0.28 + Math.sin(t * 0.002 + i * 2.1) * 0.06);
-      const shimmer = ctx.createLinearGradient(0, yPos - 60, 0, yPos + 60);
-      shimmer.addColorStop(0,   'rgba(56,189,248,0)');
-      shimmer.addColorStop(0.5, `rgba(56,189,248,${0.028 + Math.sin(t*0.003+i)*0.014})`);
-      shimmer.addColorStop(1,   'rgba(56,189,248,0)');
+    // 4. Aurora shimmer bands
+    for (let i = 0; i < 4; i++) {
+      const yPos = H * (0.16 + i * 0.22 + Math.sin(t * 0.002 + i * 2.1) * 0.06);
+      const shimmer = ctx.createLinearGradient(0, yPos - 70, 0, yPos + 70);
+      shimmer.addColorStop(0, 'rgba(56,189,248,0)');
+      shimmer.addColorStop(0.5, `rgba(56,189,248,${0.02 + Math.sin(t*0.003+i)*0.015})`);
+      shimmer.addColorStop(1, 'rgba(56,189,248,0)');
       ctx.fillStyle = shimmer;
-      ctx.fillRect(0, yPos - 60, W, 120);
+      ctx.fillRect(0, yPos - 70, W, 140);
     }
 
-    // 4. Stars with twinkle
+    // 5. Stars with twinkle and tiny drift
     for (const s of stars) {
+      s.x += s.drift;
+      if (s.x > 1.02) s.x = -0.02;
+      if (s.x < -0.02) s.x = 1.02;
       const alpha = 0.18 + 0.72 * (0.5 + 0.5 * Math.sin(t * s.speed * 0.02 + s.phase));
-      ctx.beginPath();
-      ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = s.color.replace(')', `,${alpha})`).replace('rgb','rgba').replace('#ffffff', `rgba(255,255,255,${alpha})`).replace('#bae6fd', `rgba(186,230,253,${alpha})`);
-
-      // draw properly
+      const sx = s.x * W;
+      const sy = s.y * H;
       ctx.save();
       ctx.globalAlpha = alpha;
       ctx.fillStyle = s.color;
+      ctx.beginPath();
+      ctx.arc(sx, sy, s.r, 0, Math.PI * 2);
       ctx.fill();
-
-      // cross sparkle on bigger stars
-      if (s.r > 1.3) {
+      if (s.r > 1.25) {
         ctx.strokeStyle = s.color;
         ctx.globalAlpha = alpha * 0.5;
         ctx.lineWidth = 0.5;
-        const sp = s.r * 3.5;
+        const sp = s.r * 3.7;
         ctx.beginPath();
-        ctx.moveTo(s.x*W - sp, s.y*H); ctx.lineTo(s.x*W + sp, s.y*H);
-        ctx.moveTo(s.x*W, s.y*H - sp); ctx.lineTo(s.x*W, s.y*H + sp);
+        ctx.moveTo(sx - sp, sy); ctx.lineTo(sx + sp, sy);
+        ctx.moveTo(sx, sy - sp); ctx.lineTo(sx, sy + sp);
         ctx.stroke();
       }
       ctx.restore();
     }
 
-    // 5. Shooting stars
+    // 6. Shooting stars
     for (let i = shoots.length - 1; i >= 0; i--) {
       const sh = shoots[i];
       sh.x += Math.cos(sh.angle) * sh.speed;
       sh.y += Math.sin(sh.angle) * sh.speed;
       sh.life++;
       const progress = sh.life / sh.maxLife;
-      const alpha = progress < 0.3
-        ? progress / 0.3
-        : progress > 0.7
-          ? 1 - (progress - 0.7) / 0.3
-          : 1;
+      const alpha = progress < 0.3 ? progress / 0.3 : progress > 0.7 ? 1 - (progress - 0.7) / 0.3 : 1;
       const tailX = sh.x - Math.cos(sh.angle) * sh.len;
       const tailY = sh.y - Math.sin(sh.angle) * sh.len;
       const grad = ctx.createLinearGradient(tailX, tailY, sh.x, sh.y);
       grad.addColorStop(0, `rgba(255,255,255,0)`);
-      grad.addColorStop(0.6, `rgba(186,230,253,${alpha * 0.6})`);
+      grad.addColorStop(0.58, `rgba(186,230,253,${alpha * 0.58})`);
       grad.addColorStop(1, `rgba(255,255,255,${alpha})`);
       ctx.save();
       ctx.beginPath();
@@ -1511,7 +1555,7 @@ window.addEventListener('resize', () => {
       if (sh.life >= sh.maxLife) shoots.splice(i, 1);
     }
 
-    // 6. Floating hearts
+    // 7. Floating hearts
     for (const h of hearts) {
       h.y -= h.speed;
       h.x += Math.sin(t * 0.006 * h.wobble + h.phase) * h.drift;
@@ -1524,12 +1568,19 @@ window.addEventListener('resize', () => {
       drawHeart(ctx, h.x, h.y, h.size);
       const hg = ctx.createRadialGradient(h.x, h.y, 0, h.x, h.y, h.size * 1.5);
       hg.addColorStop(0,   'rgba(125,211,252,0.9)');
-      hg.addColorStop(0.5, 'rgba(56,189,248,0.6)');
+      hg.addColorStop(0.5, 'rgba(56,189,248,0.55)');
       hg.addColorStop(1,   'rgba(14,165,233,0)');
       ctx.fillStyle = hg;
       ctx.fill();
       ctx.restore();
     }
+
+    // 8. Subtle vignette for depth
+    const vignette = ctx.createRadialGradient(W * 0.5, H * 0.45, Math.min(W, H) * 0.1, W * 0.5, H * 0.45, Math.max(W, H) * 0.78);
+    vignette.addColorStop(0, 'rgba(0,0,0,0)');
+    vignette.addColorStop(1, 'rgba(0,0,0,0.22)');
+    ctx.fillStyle = vignette;
+    ctx.fillRect(0, 0, W, H);
 
     requestAnimationFrame(frame);
   }
